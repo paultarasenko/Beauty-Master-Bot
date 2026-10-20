@@ -1,5 +1,7 @@
 # Beauty Master Bot
 
+[![Tests](https://github.com/paultarasenko/Beauty-Master-Bot/actions/workflows/tests.yml/badge.svg)](https://github.com/paultarasenko/Beauty-Master-Bot/actions/workflows/tests.yml)
+
 Telegram-бот для записи к бьюти-мастеру. Клиент сам выбирает услугу, дату и время и
 записывается без переписки; мастер управляет расписанием, услугами, контентом и клиентами
 через админ-панель в том же боте.

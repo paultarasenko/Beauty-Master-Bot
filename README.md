@@ -2,6 +2,39 @@
 
 [![Tests](https://github.com/paultarasenko/Beauty-Master-Bot/actions/workflows/tests.yml/badge.svg)](https://github.com/paultarasenko/Beauty-Master-Bot/actions/workflows/tests.yml)
 
+## English summary
+
+A Telegram bot that lets clients book appointments with a beauty master without any back-and-forth
+messaging. The master manages the schedule, services, content and clients from an admin panel inside
+the same bot. No AI/LLM is involved: all logic is deterministic and the data lives in PostgreSQL.
+
+**Features**
+
+- Clients: book a service on a free slot (up to three months ahead), view / cancel / reschedule
+  bookings, check a day's availability as an image, browse services, portfolio and reviews,
+  receive reminders 24 h and 2 h before a visit.
+- Master: edit working hours and services, add bookings manually (with a one-time invite link for
+  people who are not in the bot yet), block time, view statistics and export an Excel report,
+  set personal recurring reminders.
+- Abuse protection: a limit of three active bookings per client (more only with the master's
+  approval), a warning after three cancellations in a row, and the ability to restrict a client.
+
+**Engineering highlights**
+
+- Double booking is prevented by the database itself (PostgreSQL GiST exclusion constraint),
+  verified by a test with two truly concurrent requests.
+- Reminders are stored in the database and survive restarts.
+- Layered design: handler → service → repository. Alembic migrations.
+- 556 pytest tests run against a real PostgreSQL, also on every push via GitHub Actions.
+
+**Stack:** Python 3.12, aiogram 3, SQLAlchemy 2 (async), PostgreSQL 16, Alembic, APScheduler,
+Docker Compose.
+
+**Quick start:** `cp .env.example .env`, fill in `BOT_TOKEN` and `ADMIN_TELEGRAM_ID`, then
+`docker compose up --build`. Full documentation below is in Russian.
+
+---
+
 Telegram-бот для записи к бьюти-мастеру. Клиент сам выбирает услугу, дату и время и
 записывается без переписки; мастер управляет расписанием, услугами, контентом и клиентами
 через админ-панель в том же боте.
@@ -182,3 +215,7 @@ cat backup_YYYYMMDD.sql | docker compose exec -T postgres psql -U postgres beaut
 - Валюта в сообщениях зафиксирована как BYN.
 - Перерывы в течение дня учитываются при расчёте слотов, но управления ими из бота нет.
 - Статус `no_show` автоматически не выставляется.
+
+## Лицензия
+
+[MIT](./LICENSE)
